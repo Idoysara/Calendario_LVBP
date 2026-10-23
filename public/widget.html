@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hubmy LVBP Widget</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 12px;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+    }
+    hubmy-lvbp-widget {
+      width: 100%;
+      max-width: 360px;
+    }
+  </style>
+</head>
+<body>
+  <hubmy-lvbp-widget id="lvbp-widget"></hubmy-lvbp-widget>
+
+  <script type="module" src="/src/components/hubmy_lvbp_widget.js"></script>
+  <script>
+    // Listen for team param from URL or storage
+    const params = new URLSearchParams(window.location.search);
+    const team = params.get('team') || localStorage.getItem('lvbp-favorito') || 'leones';
+    document.getElementById('lvbp-widget').setAttribute('team', team);
+  </script>
+</body>
+</html>
