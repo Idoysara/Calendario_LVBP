@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17140f">
+  <meta name="description" content="Calendario de la temporada 2026-27 de la LVBP: elige tu equipo, anota los resultados, compite en la quiniela y colecciona estampas en Hubmy.">
+  <title>Calendario LVBP 26/27 — Edición Superapp Hubmy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap">
+  <style>
+    :root {
+      --mesa: #17140f;
+      --mesa-txt: #e9e1c9;
+      --mesa-suave: #9c937b;
+      --mesa-linea: #3a342a;
+      --papel: #fbf7ea;
+      --papel-txt: #14110b;
+      --oro: #c9a227;
+      --team-primary: #14110b;
+      --team-accent: #c9a227;
+      --gana: #1e8e3e;
+      --pierde: #c62828;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--mesa);
+      color: var(--mesa-txt);
+      font-family: 'Barlow', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #110e0a;
+      border-bottom: 1px solid var(--mesa-linea);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand h1 {
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.5px;
+      color: var(--oro);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .status-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .status-badge.online { background: rgba(30, 142, 62, 0.2); color: #4caf50; border: 1px solid #4caf50; }
+    .status-badge.offline { background: rgba(255, 152, 0, 0.2); color: #ff9800; border: 1px solid #ff9800; }
+    .btn-login {
+      background: var(--oro);
+      color: #14110b;
+      font-weight: 700;
+      font-size: 12px;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .user-badge {
+      font-size: 12px;
+      color: #4caf50;
+      font-weight: 600;
+    }
+    nav.team-selector {
+      background: #1e1913;
+      padding: 10px 16px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--mesa-linea);
+    }
+    .team-chip {
+      background: #2a231b;
+      color: var(--mesa-txt);
+      border: 1px solid var(--mesa-linea);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .team-chip:hover { border-color: var(--oro); }
+    nav.tabs-nav {
+      background: #17140f;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 12px;
+      border-bottom: 1px solid var(--mesa-linea);
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--mesa-suave);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active {
+      color: var(--oro);
+      border-bottom-color: var(--oro);
+    }
+    main {
+      flex: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      width: 100%;
+    }
+    .album-page, .quiniela-page, .collection-page, .standings-page {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .page-meta h2 {
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 26px;
+      color: var(--mesa-txt);
+    }
+    .subtitle {
+      font-size: 14px;
+      color: var(--mesa-suave);
+      margin-top: 4px;
+    }
+    .games-grid, .quiniela-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .game-stamp, .quiniela-card {
+      background: var(--papel);
+      color: var(--papel-txt);
+      border-radius: 12px;
+      padding: 16px;
+      border: 2px solid #e3d7b0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .game-stamp.is-classic {
+      border-color: var(--oro);
+      box-shadow: 0 0 12px rgba(201, 162, 39, 0.3);
+    }
+    .classic-ribbon {
+      position: absolute;
+      top: -10px;
+      right: 12px;
+      background: var(--oro);
+      color: #14110b;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .stamp-header, .q-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #7a6e54;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .teams-versus, .q-matchup {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+    }
+    .team-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 42%;
+    }
+    .t-name {
+      font-weight: 700;
+      font-size: 14px;
+      text-align: center;
+    }
+    .score-input, .q-input {
+      width: 54px;
+      height: 38px;
+      text-align: center;
+      font-size: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      background: #fff;
+      border: 2px solid #c4b998;
+      border-radius: 6px;
+    }
+    .vs-divider {
+      font-family: 'Anton', Impact, sans-serif;
+      font-size: 18px;
+      color: var(--oro);
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed #d5c8a3;
+    }
+    .btn-save-score, .btn-submit-pred {
+      background: #14110b;
+      color: #fbf7ea;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-save-score:hover, .btn-submit-pred:hover {
+      background: var(--oro);
+      color: #14110b;
+    }
+    .progress-bar-container {
+      background: #2a231b;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-bar {
+      background: var(--oro);
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+    .progress-label {
+      font-size: 13px;
+      color: var(--mesa-suave);
+      margin-top: 6px;
+    }
+    .stamps-catalog {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .stamp-badge {
+      background: #252019;
+      border: 1px solid var(--mesa-linea);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+    .stamp-badge.unlocked {
+      border-color: var(--oro);
+      background: radial-gradient(circle at top, rgba(201, 162, 39, 0.2) 0%, #252019 70%);
+    }
+    .stamp-icon { font-size: 32px; }
+    .stamp-title { font-weight: 700; font-size: 14px; color: var(--mesa-txt); }
+    .stamp-rarity { font-size: 10px; font-weight: 800; letter-spacing: 0.5px; color: var(--oro); }
+    .stamp-desc { font-size: 12px; color: var(--mesa-suave); }
+    .standings-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #1e1913;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .standings-table th, .standings-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--mesa-linea);
+    }
+    .standings-table th { background: #14110b; color: var(--oro); font-size: 12px; }
+    footer {
+      background: #110e0a;
+      border-top: 1px solid var(--mesa-linea);
+      padding: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--mesa-suave);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>LVBP 26/27</h1>
+      <span class="status-badge online" id="connection-status">🟢 Conectado</span>
+    </div>
+    <div class="header-actions" id="auth-section">
+      <button class="btn-login" id="btn-hubmy-login">Entrar con Hubmy</button>
+    </div>
+  </header>
+
+  <nav class="team-selector" aria-label="Selecciona tu equipo">
+    <button class="team-chip" data-team="aguilas">Águilas</button>
+    <button class="team-chip" data-team="bravos">Bravos</button>
+    <button class="team-chip" data-team="cardenales">Cardenales</button>
+    <button class="team-chip" data-team="caribes">Caribes</button>
+    <button class="team-chip" data-team="leones">Leones</button>
+    <button class="team-chip" data-team="magallanes">Magallanes</button>
+    <button class="team-chip" data-team="tiburones">Tiburones</button>
+    <button class="team-chip" data-team="tigres">Tigres</button>
+  </nav>
+
+  <nav class="tabs-nav" aria-label="Secciones">
+    <button class="tab-btn active" data-tab="album">Álbum de Juegos</button>
+    <button class="tab-btn" data-tab="quiniela">Quiniela</button>
+    <button class="tab-btn" data-tab="coleccion">Estampas</button>
+    <button class="tab-btn" data-tab="posiciones">Posiciones</button>
+  </nav>
+
+  <main id="main-container">
+    <!-- Dynamic content rendered by AlbumApp -->
+  </main>
+
+  <footer>
+    <p>Calendario Oficial LVBP 2026-2027 • Diseñado e integrado para la Super App Hubmy</p>
+  </footer>
+
+  <script type="module" src="/src/components/album_view.js"></script>
+</body>
+</html>
